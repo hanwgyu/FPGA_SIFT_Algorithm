@@ -17,7 +17,7 @@
 #include "oclHelper.h"
 #include "medianFilter.h"
 #include "param.h"
-
+1234
 #define PIX_PER_KP 10  //pre_allocate buffers for keypoints
 
 /* Global Variables */
