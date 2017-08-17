@@ -20,6 +20,7 @@
 
 #define PIX_PER_KP 10  //pre_allocate buffers for keypoints
 
+
 /* Global Variables */
 cl_kernel mKernel_local_maxmin, mKernel_interp_keypoint, mKernel_compute_gradient_orientation,\
 			mKernel_orientation_assignment, mKernel_descriptor;
