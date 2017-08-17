@@ -1,0 +1,2 @@
+running HLS transform to generate intermediate files for kernel: descriptor
+Log file:/home/ncl/eyoh/test/Emulation-CPU/_xocc_link_binary_container_1/impl/build/cpu_em/binary_container_1/csim/descriptor/descriptor_hls_transform.log

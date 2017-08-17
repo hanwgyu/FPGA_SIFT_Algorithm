@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="binary_container_1">
+  <platform vendor="xilinx" boardid="kcu1500" name="4ddr-xpr" featureRomTime="1496957955">
+    <version major="4" minor="0"/>
+    <description>This platform targets the Kintex UltraScale KCU1500 Acceleration Development Board. This high-performance acceleration platform features four channels of DDR4-2400 SDRAM, the expanded partial reconfiguration flow for high fabric resource availability, and Xilinx DMA Subsystem for PCI Express with PCIe Gen3 x8 connectivity.</description>
+    <board name="xilinx.com:kcu1500:1.0" vendor="xilinx.com" fpga="XCKU115-FLVB2104-2-E">
+      <interfaces>
+        <interface id="int1" name="PCIe" type=""/>
+      </interfaces>
+      <memories>
+        <memory name="expanded_region_memc_ddrmem_0" type="ddr4" size="4GB"/>
+        <memory name="expanded_region_memc_ddrmem_1" type="ddr4" size="4GB"/>
+        <memory name="expanded_region_memc_ddrmem_2" type="ddr4" size="4GB"/>
+        <memory name="expanded_region_memc_ddrmem_3" type="ddr4" size="4GB"/>
+      </memories>
+      <images>
+        <image name="kcu1500_board.jpeg" type="HDPI"/>
+        <image name="" type="MDPI"/>
+        <image name="" type="LDPI"/>
+      </images>
+      <id>
+        <vendor>0x10EE</vendor>
+        <device>0x4B28</device>
+        <subsystem>0x4340</subsystem>
+      </id>
+    </board>
+    <build_flow/>
+    <host architecture="x86_64"/>
+    <device name="fpga0" fpgaDevice="kintexu:xcku115:flvb2104:-2:e" addrWidth="34">
+      <core name="OCL_REGION_0" target="csim" type="clc_region" clockFreq="300MHz" numComputeUnits="16">
+        <kernel name="orientation_assignment" language="clc" vlnv="xilinx.com:hls:orientation_assignment:1.0" hash="2hsBjg14mobBdFjb/is2K/" preferredWorkGroupSizeMultiple="0" workGroupSize="4096" debug="true">
+          <port name="M_AXI_GMEM" mode="master" range="0xFFFFFFFF" dataWidth="128" portType="addressable" base="0x0"/>
+          <port name="S_AXI_CONTROL" mode="slave" range="0x1000" dataWidth="32" portType="addressable" base="0x0"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x10" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x18" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x20" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x28" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x30" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x38" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="keypoints" addressQualifier="1" id="0" port="M_AXI_GMEM" size="0x8" offset="0x40" hostOffset="0x0" hostSize="0x8" type="keypoint*"/>
+          <arg name="grad" addressQualifier="1" id="1" port="M_AXI_GMEM" size="0x8" offset="0x4C" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="ori" addressQualifier="1" id="2" port="M_AXI_GMEM" size="0x8" offset="0x58" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="counter" addressQualifier="1" id="3" port="M_AXI_GMEM" size="0x8" offset="0x64" hostOffset="0x0" hostSize="0x8" type="int*"/>
+          <arg name="octsize" addressQualifier="0" id="4" port="S_AXI_CONTROL" size="0x4" offset="0x70" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="OriSigma" addressQualifier="0" id="5" port="S_AXI_CONTROL" size="0x4" offset="0x78" hostOffset="0x0" hostSize="0x4" type="float"/>
+          <arg name="nb_keypoints" addressQualifier="0" id="6" port="S_AXI_CONTROL" size="0x4" offset="0x80" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="keypoints_start" addressQualifier="0" id="7" port="S_AXI_CONTROL" size="0x4" offset="0x88" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="keypoints_end" addressQualifier="0" id="8" port="S_AXI_CONTROL" size="0x4" offset="0x90" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="grad_width" addressQualifier="0" id="9" port="S_AXI_CONTROL" size="0x4" offset="0x98" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="grad_height" addressQualifier="0" id="10" port="S_AXI_CONTROL" size="0x4" offset="0xA0" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <compileWorkGroupSize x="0" y="0" z="0"/>
+          <maxWorkGroupSize x="0" y="0" z="0"/>
+          <string_table/>
+          <instance name="orientation_assignment_1">
+            <addrRemap base="0x00000000" port="S_AXI_CONTROL"/>
+          </instance>
+        </kernel>
+        <kernel name="compute_gradient_orientation" language="clc" vlnv="xilinx.com:hls:compute_gradient_orientation:1.0" hash="SVazJsoGpRnSqzeohQor5/" preferredWorkGroupSizeMultiple="0" workGroupSize="4096" debug="true">
+          <port name="M_AXI_GMEM" mode="master" range="0xFFFFFFFF" dataWidth="32" portType="addressable" base="0x0"/>
+          <port name="S_AXI_CONTROL" mode="slave" range="0x1000" dataWidth="32" portType="addressable" base="0x0"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x10" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x18" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x20" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x28" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x30" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x38" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x40" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x48" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x50" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="igray" addressQualifier="1" id="0" port="M_AXI_GMEM" size="0x8" offset="0x58" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="grad" addressQualifier="1" id="1" port="M_AXI_GMEM" size="0x8" offset="0x64" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="ori" addressQualifier="1" id="2" port="M_AXI_GMEM" size="0x8" offset="0x70" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="width" addressQualifier="0" id="3" port="S_AXI_CONTROL" size="0x4" offset="0x7C" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="height" addressQualifier="0" id="4" port="S_AXI_CONTROL" size="0x4" offset="0x84" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <compileWorkGroupSize x="0" y="0" z="0"/>
+          <maxWorkGroupSize x="0" y="0" z="0"/>
+          <string_table/>
+          <instance name="compute_gradient_orientation_1">
+            <addrRemap base="0x00001000" port="S_AXI_CONTROL"/>
+          </instance>
+        </kernel>
+        <kernel name="local_maxmin" language="clc" vlnv="xilinx.com:hls:local_maxmin:1.0" hash="SVazJsoGpRnSqzeohQor5/" preferredWorkGroupSizeMultiple="0" workGroupSize="4096" debug="true">
+          <port name="M_AXI_GMEM" mode="master" range="0xFFFFFFFF" dataWidth="128" portType="addressable" base="0x0"/>
+          <port name="S_AXI_CONTROL" mode="slave" range="0x1000" dataWidth="32" portType="addressable" base="0x0"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x10" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x18" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x20" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x28" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x30" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x38" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x40" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x48" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x50" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="DOGS" addressQualifier="1" id="0" port="M_AXI_GMEM" size="0x8" offset="0x58" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="output_r" addressQualifier="1" id="1" port="M_AXI_GMEM" size="0x8" offset="0x64" hostOffset="0x0" hostSize="0x8" type="keypoint*"/>
+          <arg name="border_dist" addressQualifier="0" id="2" port="S_AXI_CONTROL" size="0x4" offset="0x70" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="peak_thresh" addressQualifier="0" id="3" port="S_AXI_CONTROL" size="0x4" offset="0x78" hostOffset="0x0" hostSize="0x4" type="float"/>
+          <arg name="octsize" addressQualifier="0" id="4" port="S_AXI_CONTROL" size="0x4" offset="0x80" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="EdgeThresh0" addressQualifier="0" id="5" port="S_AXI_CONTROL" size="0x4" offset="0x88" hostOffset="0x0" hostSize="0x4" type="float"/>
+          <arg name="EdgeThresh" addressQualifier="0" id="6" port="S_AXI_CONTROL" size="0x4" offset="0x90" hostOffset="0x0" hostSize="0x4" type="float"/>
+          <arg name="counter" addressQualifier="1" id="7" port="M_AXI_GMEM" size="0x8" offset="0x98" hostOffset="0x0" hostSize="0x8" type="int*"/>
+          <arg name="nb_keypoints" addressQualifier="0" id="8" port="S_AXI_CONTROL" size="0x4" offset="0xA4" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="scale" addressQualifier="0" id="9" port="S_AXI_CONTROL" size="0x4" offset="0xAC" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="width" addressQualifier="0" id="10" port="S_AXI_CONTROL" size="0x4" offset="0xB4" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="height" addressQualifier="0" id="11" port="S_AXI_CONTROL" size="0x4" offset="0xBC" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <compileWorkGroupSize x="0" y="0" z="0"/>
+          <maxWorkGroupSize x="0" y="0" z="0"/>
+          <string_table/>
+          <instance name="local_maxmin_1">
+            <addrRemap base="0x00002000" port="S_AXI_CONTROL"/>
+          </instance>
+        </kernel>
+        <kernel name="descriptor" language="clc" vlnv="xilinx.com:hls:descriptor:1.0" hash="CqGJFYu5BrlDIn4Rz2a/m." preferredWorkGroupSizeMultiple="0" workGroupSize="4096" debug="true">
+          <port name="M_AXI_GMEM" mode="master" range="0xFFFFFFFF" dataWidth="128" portType="addressable" base="0x0"/>
+          <port name="S_AXI_CONTROL" mode="slave" range="0x1000" dataWidth="32" portType="addressable" base="0x0"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x10" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x18" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x20" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x28" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x30" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x38" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="keypoints" addressQualifier="1" id="0" port="M_AXI_GMEM" size="0x8" offset="0x40" hostOffset="0x0" hostSize="0x8" type="keypoint*"/>
+          <arg name="descriptors" addressQualifier="1" id="1" port="M_AXI_GMEM" size="0x8" offset="0x4C" hostOffset="0x0" hostSize="0x8" type="uchar*"/>
+          <arg name="grad" addressQualifier="1" id="2" port="M_AXI_GMEM" size="0x8" offset="0x58" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="orim" addressQualifier="1" id="3" port="M_AXI_GMEM" size="0x8" offset="0x64" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="octsize" addressQualifier="0" id="4" port="S_AXI_CONTROL" size="0x4" offset="0x70" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="keypoints_start" addressQualifier="0" id="5" port="S_AXI_CONTROL" size="0x4" offset="0x78" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="keypoints_end" addressQualifier="1" id="6" port="M_AXI_GMEM" size="0x8" offset="0x80" hostOffset="0x0" hostSize="0x8" type="int*"/>
+          <arg name="grad_width" addressQualifier="0" id="7" port="S_AXI_CONTROL" size="0x4" offset="0x8C" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="grad_height" addressQualifier="0" id="8" port="S_AXI_CONTROL" size="0x4" offset="0x94" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <compileWorkGroupSize x="0" y="0" z="0"/>
+          <maxWorkGroupSize x="0" y="0" z="0"/>
+          <string_table/>
+          <instance name="descriptor_1">
+            <addrRemap base="0x00003000" port="S_AXI_CONTROL"/>
+          </instance>
+        </kernel>
+        <kernel name="interp_keypoint" language="clc" vlnv="xilinx.com:hls:interp_keypoint:1.0" hash="SVazJsoGpRnSqzeohQor5/" preferredWorkGroupSizeMultiple="0" workGroupSize="4096" debug="true">
+          <port name="M_AXI_GMEM" mode="master" range="0xFFFFFFFF" dataWidth="128" portType="addressable" base="0x0"/>
+          <port name="S_AXI_CONTROL" mode="slave" range="0x1000" dataWidth="32" portType="addressable" base="0x0"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x10" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x18" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="local_size" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x20" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x28" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x30" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="group_id" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x38" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x40" hostOffset="0x0" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x48" hostOffset="0x4" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="global_offset" addressQualifier="0" id="" port="S_AXI_CONTROL" size="0x4" offset="0x50" hostOffset="0x8" hostSize="0x4" type="uint" origUse="function"/>
+          <arg name="DOGS" addressQualifier="1" id="0" port="M_AXI_GMEM" size="0x8" offset="0x58" hostOffset="0x0" hostSize="0x8" type="float*"/>
+          <arg name="keypoints" addressQualifier="1" id="1" port="M_AXI_GMEM" size="0x8" offset="0x64" hostOffset="0x0" hostSize="0x8" type="keypoint*"/>
+          <arg name="start_keypoints" addressQualifier="0" id="2" port="S_AXI_CONTROL" size="0x4" offset="0x70" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="end_keypoints" addressQualifier="0" id="3" port="S_AXI_CONTROL" size="0x4" offset="0x78" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="peak_thresh" addressQualifier="0" id="4" port="S_AXI_CONTROL" size="0x4" offset="0x80" hostOffset="0x0" hostSize="0x4" type="float"/>
+          <arg name="InitSigma" addressQualifier="0" id="5" port="S_AXI_CONTROL" size="0x4" offset="0x88" hostOffset="0x0" hostSize="0x4" type="float"/>
+          <arg name="width" addressQualifier="0" id="6" port="S_AXI_CONTROL" size="0x4" offset="0x90" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <arg name="height" addressQualifier="0" id="7" port="S_AXI_CONTROL" size="0x4" offset="0x98" hostOffset="0x0" hostSize="0x4" type="int"/>
+          <compileWorkGroupSize x="0" y="0" z="0"/>
+          <maxWorkGroupSize x="0" y="0" z="0"/>
+          <string_table/>
+          <instance name="interp_keypoint_1">
+            <addrRemap base="0x00004000" port="S_AXI_CONTROL"/>
+          </instance>
+        </kernel>
+        <connection srcType="kernel" srcInst="local_maxmin_1" srcPort="M_AXI_GMEM" dstType="core" dstInst="OCL_REGION_0" dstPort="M00_AXI"/>
+        <connection srcType="core" srcInst="OCL_REGION_0" srcPort="S_AXI" dstType="kernel" dstInst="local_maxmin_1" dstPort="S_AXI_CONTROL"/>
+        <connection srcType="kernel" srcInst="interp_keypoint_1" srcPort="M_AXI_GMEM" dstType="core" dstInst="OCL_REGION_0" dstPort="M00_AXI"/>
+        <connection srcType="core" srcInst="OCL_REGION_0" srcPort="S_AXI" dstType="kernel" dstInst="interp_keypoint_1" dstPort="S_AXI_CONTROL"/>
+        <connection srcType="kernel" srcInst="compute_gradient_orientation_1" srcPort="M_AXI_GMEM" dstType="core" dstInst="OCL_REGION_0" dstPort="M00_AXI"/>
+        <connection srcType="core" srcInst="OCL_REGION_0" srcPort="S_AXI" dstType="kernel" dstInst="compute_gradient_orientation_1" dstPort="S_AXI_CONTROL"/>
+        <connection srcType="kernel" srcInst="orientation_assignment_1" srcPort="M_AXI_GMEM" dstType="core" dstInst="OCL_REGION_0" dstPort="M00_AXI"/>
+        <connection srcType="core" srcInst="OCL_REGION_0" srcPort="S_AXI" dstType="kernel" dstInst="orientation_assignment_1" dstPort="S_AXI_CONTROL"/>
+        <connection srcType="kernel" srcInst="descriptor_1" srcPort="M_AXI_GMEM" dstType="core" dstInst="OCL_REGION_0" dstPort="M00_AXI"/>
+        <connection srcType="core" srcInst="OCL_REGION_0" srcPort="S_AXI" dstType="kernel" dstInst="descriptor_1" dstPort="S_AXI_CONTROL"/>
+      </core>
+    </device>
+  </platform>
+</project>

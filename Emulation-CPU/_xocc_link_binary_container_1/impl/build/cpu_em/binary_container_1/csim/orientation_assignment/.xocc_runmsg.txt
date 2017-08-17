@@ -1,0 +1,2 @@
+running HLS transform to generate intermediate files for kernel: orientation_assignment
+Log file:/home/ncl/eyoh/test/Emulation-CPU/_xocc_link_binary_container_1/impl/build/cpu_em/binary_container_1/csim/orientation_assignment/orientation_assignment_hls_transform.log

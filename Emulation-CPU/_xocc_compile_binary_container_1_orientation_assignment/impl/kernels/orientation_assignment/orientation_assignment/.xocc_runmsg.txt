@@ -1,0 +1,2 @@
+running HLS transform to generate kernel.xml from kernel sources files for kernel: orientation_assignment
+Log file:/home/ncl/eyoh/test/Emulation-CPU/_xocc_compile_binary_container_1_orientation_assignment/impl/kernels/orientation_assignment/orientation_assignment/orientation_assignment_hls_transform.log

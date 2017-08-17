@@ -1,0 +1,6 @@
+22:33:24 **** Incremental Build of configuration Emulation-CPU for project waneyoh ****
+make incremental 
+make: 'incremental'을(를) 위해 할 일이 없습니다.
+
+22:33:24 Build Finished (took 112ms)
+

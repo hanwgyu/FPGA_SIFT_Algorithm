@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="/opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0" key="sdx.custom.platform.repository.last.directory.dialog.location"/>
+	<item value="xilinx:kcu1500:4ddr-xpr:4.0" key="sdx.platform"/>
+	<item value="/home/ncl/eyoh/RemoteSystemsTempFiles" key="sdx.project.location"/>
+	<item value="1" key="sdx.device.count"/>
+	<item value="false" key="sdx.is.shared.library"/>
+	<item value="false" key="sdx.is.system.root"/>
+	<item value="OpenCL" key="sdx.runtime"/>
+	<item value="/opt/Xilinx/SDx/2017.1/platforms/xilinx_kcu1500_4ddr-xpr_4_0;/opt/Xilinx/SDx/2017.1/platforms/xilinx_kcu1500_4ddr-xpr_4_0/hw;/opt/Xilinx/SDx/2017.1/platforms/xilinx_kcu1500_4ddr-xpr_4_0/test;/opt/Xilinx/SDx/2017.1/platforms/xilinx_kcu1500_4ddr-xpr_4_0/sw;/opt/Xilinx/SDx/2017.1/platforms/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0;/opt/Xilinx/SDx/2017.1/platforms/xilinx_xil-accel-rd-ku115_4ddr-xpr_3_3;/opt/Xilinx/SDx/2017.1/platforms/xilinx_zc706_linux-uart_1_0;/opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0" key="sdx.custom.platform.repository.locations"/>
+	<item value="linux" key="sdx.os"/>
+	<item value="eyoh_test" key="sdx.project.name"/>
+	<item value="linux_x86" key="sdx.system.configuration"/>
+</section>

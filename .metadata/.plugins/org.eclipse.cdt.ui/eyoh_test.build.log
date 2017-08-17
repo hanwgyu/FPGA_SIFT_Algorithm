@@ -1,0 +1,65 @@
+17:13:45 **** Build of configuration Emulation-CPU for project eyoh_test ****
+make incremental 
+/opt/Xilinx/SDx/2017.1/bin/xocc -t sw_emu --platform /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm --save-temps   -c -k median -g --messageDb binary_container_1/median.mdb -I"../src" --xp misc:solution_name=_xocc_compile_binary_container_1_median -o"binary_container_1/median.xo" "../src/krnl_medianFilter.cl"
+
+****** xocc v2017.1_sdx (64-bit)
+  **** SW Build 1915620 on Thu Jun 22 17:54:59 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+Attempting to get a license: ap_opencl
+Feature available: ap_opencl
+INFO: [XOCC 60-585] Compiling for software emulation target
+INFO: [XOCC 74-20] Replacing platform /opt/Xilinx/SDx/2017.1/platforms/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm with /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm.
+INFO: [XOCC 74-20] Replacing platform /opt/Xilinx/SDx/2017.1/platforms/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0.xpfm with /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/hw/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0.dsa.
+INFO: [XOCC 60-895]    Target platform: /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm
+INFO: [XOCC 60-423]   Target device: xilinx:kcu1500:4ddr-xpr:4.0
+INFO: [XOCC 60-242] Creating kernel: 'median'
+INFO: [XOCC 60-594] Finished kernel compilation
+INFO: [XOCC 60-586] Created binary_container_1/median.xo
+INFO: [XOCC 60-791] Total elapsed time: 0h 0m 3s
+/opt/Xilinx/SDx/2017.1/bin/xocc -t sw_emu --platform /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm --save-temps   -l --nk median:1 -g --messageDb binary_container_1.mdb --xp misc:solution_name=_xocc_link_binary_container_1 -o"binary_container_1.xclbin" binary_container_1/median.xo
+
+****** xocc v2017.1_sdx (64-bit)
+  **** SW Build 1915620 on Thu Jun 22 17:54:59 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+INFO: [XOCC 74-20] Replacing platform /opt/Xilinx/SDx/2017.1/platforms/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm with /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm.
+INFO: [XOCC 74-20] Replacing platform /opt/Xilinx/SDx/2017.1/platforms/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0.xpfm with /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/hw/xilinx_xil-accel-rd-ku115_4ddr-xpr_4_0.dsa.
+Attempting to get a license: ap_opencl
+Feature available: ap_opencl
+INFO: [XOCC 60-629] Linking for software emulation target
+INFO: [XOCC 60-895]    Target platform: /opt/kcu1500_custom_reference_design/xilinx_kcu1500_4ddr-xpr_4_0/xilinx_kcu1500_4ddr-xpr_4_0.xpfm
+INFO: [XOCC 60-423]   Target device: xilinx:kcu1500:4ddr-xpr:4.0
+INFO: [XOCC 60-586] Created binary_container_1.xclbin
+INFO: [XOCC 60-791] Total elapsed time: 0h 0m 6s
+/opt/Xilinx/SDx/2017.1/bin/xcpp -DSDX_PLATFORM=xilinx:kcu1500:4ddr-xpr:4.0 -D__USE_XOPEN2K8 -I/opt/Xilinx/SDx/2017.1/runtime/include/1_2/ -I/opt/Xilinx/SDx/2017.1/Vivado_HLS/include/ -O0 -g -Wall -c -fmessage-length=0 -std=c++14 -o "src/bitmap.o" "../src/bitmap.cpp"
+/opt/Xilinx/SDx/2017.1/bin/xcpp -DSDX_PLATFORM=xilinx:kcu1500:4ddr-xpr:4.0 -D__USE_XOPEN2K8 -I/opt/Xilinx/SDx/2017.1/runtime/include/1_2/ -I/opt/Xilinx/SDx/2017.1/Vivado_HLS/include/ -O0 -g -Wall -c -fmessage-length=0 -std=c++14 -o "src/local_maxmin.o" "../src/local_maxmin.cpp"
+../src/local_maxmin.cpp: In function ‘int main(int, char**)’:
+../src/local_maxmin.cpp:109:7: warning: unused variable ‘image_size’ [-Wunused-variable]
+   int image_size = image.numPixels();
+       ^
+../src/local_maxmin.cpp:186:12: warning: variable ‘KpFromDevice’ set but not used [-Wunused-but-set-variable]
+     cl_mem KpFromDevice ;
+            ^
+../src/local_maxmin.cpp:242:7: warning: unused variable ‘nb_keypoints’ [-Wunused-variable]
+   int nb_keypoints = 8376;
+       ^
+../src/local_maxmin.cpp:243:7: warning: unused variable ‘scale’ [-Wunused-variable]
+   int scale = 2;
+       ^
+/opt/Xilinx/SDx/2017.1/bin/xcpp -DSDX_PLATFORM=xilinx:kcu1500:4ddr-xpr:4.0 -D__USE_XOPEN2K8 -I/opt/Xilinx/SDx/2017.1/runtime/include/1_2/ -I/opt/Xilinx/SDx/2017.1/Vivado_HLS/include/ -O0 -g -Wall -c -fmessage-length=0 -std=c++14 -o "src/medianFilter.o" "../src/medianFilter.cpp"
+/opt/Xilinx/SDx/2017.1/bin/xcpp -DSDX_PLATFORM=xilinx:kcu1500:4ddr-xpr:4.0 -D__USE_XOPEN2K8 -I/opt/Xilinx/SDx/2017.1/runtime/include/1_2/ -I/opt/Xilinx/SDx/2017.1/Vivado_HLS/include/ -O0 -g -Wall -c -fmessage-length=0 -std=c++14 -o "src/oclErrorCodes.o" "../src/oclErrorCodes.cpp"
+/opt/Xilinx/SDx/2017.1/bin/xcpp -DSDX_PLATFORM=xilinx:kcu1500:4ddr-xpr:4.0 -D__USE_XOPEN2K8 -I/opt/Xilinx/SDx/2017.1/runtime/include/1_2/ -I/opt/Xilinx/SDx/2017.1/Vivado_HLS/include/ -O0 -g -Wall -c -fmessage-length=0 -std=c++14 -o "src/oclHelper.o" "../src/oclHelper.cpp"
+/opt/Xilinx/SDx/2017.1/bin/xcpp -o "eyoh_test.exe" src/bitmap.o src/local_maxmin.o src/medianFilter.o src/oclErrorCodes.o src/oclHelper.o -lxilinxopencl -lpthread -lrt -lstdc++ -L/opt/Xilinx/SDx/2017.1/runtime/lib/x86_64
+src/medianFilter.o: In function `BitmapInterface::getWidth()':
+/home/ncl/eyoh/RemoteSystemsTempFiles/Emulation-CPU/../src/medianFilter.cpp:61: multiple definition of `checkErrorStatus(int, char const*)'
+makefile:108: 'eyoh_test.exe' 타겟에 대한 명령이 실패했습니다
+src/local_maxmin.o:/home/ncl/eyoh/RemoteSystemsTempFiles/Emulation-CPU/../src/local_maxmin.cpp:61: first defined here
+src/medianFilter.o: In function `main':
+/home/ncl/eyoh/RemoteSystemsTempFiles/Emulation-CPU/../src/medianFilter.cpp:71: multiple definition of `main'
+src/local_maxmin.o:/home/ncl/eyoh/RemoteSystemsTempFiles/Emulation-CPU/../src/local_maxmin.cpp:72: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [eyoh_test.exe] 오류 1
+
+17:13:56 Build Finished (took 11s.543ms)
+

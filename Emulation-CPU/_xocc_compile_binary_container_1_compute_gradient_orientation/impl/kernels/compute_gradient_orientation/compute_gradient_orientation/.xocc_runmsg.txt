@@ -1,0 +1,2 @@
+running HLS transform to generate kernel.xml from kernel sources files for kernel: compute_gradient_orientation
+Log file:/home/ncl/eyoh/test/Emulation-CPU/_xocc_compile_binary_container_1_compute_gradient_orientation/impl/kernels/compute_gradient_orientation/compute_gradient_orientation/compute_gradient_orientation_hls_transform.log

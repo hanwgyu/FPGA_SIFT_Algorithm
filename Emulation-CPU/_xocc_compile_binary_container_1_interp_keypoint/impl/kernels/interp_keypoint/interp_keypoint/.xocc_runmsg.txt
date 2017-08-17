@@ -1,0 +1,2 @@
+running HLS transform to generate kernel.xml from kernel sources files for kernel: interp_keypoint
+Log file:/home/ncl/eyoh/test/Emulation-CPU/_xocc_compile_binary_container_1_interp_keypoint/impl/kernels/interp_keypoint/interp_keypoint/interp_keypoint_hls_transform.log

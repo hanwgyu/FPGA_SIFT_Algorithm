@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<openclProject:OpenCLProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:openclProject="http://www.xilinx.com/openclproject" name="waneyoh" location="/home/ncl/wjkim/workspace/waneyoh" platform="xilinx:kcu1500:4ddr-xpr:4.0" sysConfig="linux_x86" cpu="" os="linux">
+  <configuration name="Emulation-CPU" id="com.xilinx.sdx.opencl.config.sw_emu.2078584658">
+    <configBuildOptions xsi:type="openclProject:OpenCLOptions" kernelDebug="true">
+      <binaryContainers name="binary_container_1">
+        <kernels name="local_maxmin" sourceFile="src/image.cl"/>
+        <kernels name="interp_keypoint" sourceFile="src/image.cl"/>
+      </binaryContainers>
+    </configBuildOptions>
+    <lastBuildOptions xsi:type="openclProject:OpenCLOptions" kernelDebug="true">
+      <binaryContainers name="binary_container_1">
+        <kernels name="local_maxmin" sourceFile="src/image.cl"/>
+      </binaryContainers>
+    </lastBuildOptions>
+  </configuration>
+  <configuration name="Emulation-HW" id="com.xilinx.sdx.opencl.config.hw_emu.282239754">
+    <configBuildOptions xsi:type="openclProject:OpenCLOptions" kernelDebug="true" target="hw_emu">
+      <binaryContainers name="binary_container_1">
+        <kernels name="local_maxmin" sourceFile="src/image.cl"/>
+        <kernels name="interp_keypoint" sourceFile="src/image.cl"/>
+      </binaryContainers>
+    </configBuildOptions>
+  </configuration>
+  <configuration name="System" id="com.xilinx.sdx.opencl.config.hw.1538531613">
+    <configBuildOptions xsi:type="openclProject:OpenCLOptions" target="hw">
+      <binaryContainers name="binary_container_1">
+        <kernels name="local_maxmin" sourceFile="src/image.cl"/>
+        <kernels name="interp_keypoint" sourceFile="src/image.cl"/>
+      </binaryContainers>
+    </configBuildOptions>
+    <lastBuildOptions xsi:type="openclProject:OpenCLOptions" target="hw">
+      <binaryContainers name="binary_container_1">
+        <kernels name="local_maxmin" sourceFile="src/image.cl"/>
+      </binaryContainers>
+    </lastBuildOptions>
+  </configuration>
+</openclProject:OpenCLProject>

@@ -1,0 +1,2 @@
+running HLS transform to generate intermediate files for kernel: interp_keypoint
+Log file:/home/ncl/eyoh/test/Emulation-CPU/_xocc_link_binary_container_1/impl/build/cpu_em/binary_container_1/csim/interp_keypoint/interp_keypoint_hls_transform.log

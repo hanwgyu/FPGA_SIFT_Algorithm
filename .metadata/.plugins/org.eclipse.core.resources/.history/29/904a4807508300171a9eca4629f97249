@@ -1,0 +1,392 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <cstring>
+
+#include <CL/cl.h>
+
+#include "bitmap.h"
+#include "oclHelper.h"
+#include "medianFilter.h"
+
+void checkErrorStatus(cl_int error, const char* message)
+{
+	if (error != CL_SUCCESS)
+	{
+		printf("the error detected by checkErrorStatus()\n");
+		printf("%s\n", message) ;
+		printf("%s\n", oclErrorCode(error)) ;
+		exit(0) ;
+	}
+}
+
+int main(int argc, char* argv[])
+{
+	//TARGET_DEVICE macro needs to be passed from gcc command line
+#if defined(SDX_PLATFORM) && !defined(TARGET_DEVICE)
+#define STR_VALUE(arg)      #arg
+#define GET_STRING(name) STR_VALUE(name)
+#define TARGET_DEVICE GET_STRING(SDX_PLATFORM)
+#endif
+	//TARGET_DEVICE macro needs to be passed from gcc command line
+	const char *target_device_name = TARGET_DEVICE;
+
+	const int width = 217 ; // Default size
+	const int height = 386 ; // Default size
+
+	// Allocate memory in host memory
+	int PIX_PER_KP = 10;
+	int image_size = height*width;
+	int DoGs_size = 5*height*width;
+	int Kp_1_size = image_size/PIX_PER_KP;
+
+	std::cout << "Kp_1_size : " << Kp_1_size << "\n";
+	std::cout << "DoGs_size : " << DoGs_size << "\n";
+
+	cl_float *DoGs = new cl_float[DoGs_size];
+
+	cl_float4 *Kp_1 = new cl_float4[Kp_1_size];
+	for(int i=0; i<Kp_1_size; i++){
+		Kp_1[i].s[0] = -1.0;
+		Kp_1[i].s[1] = -1.0;
+		Kp_1[i].s[2] = -1.0;
+		Kp_1[i].s[3] = -1.0;
+	}
+
+	//file read
+	//read DoGs
+	FILE *fl;
+	fl = fopen("/home/ncl/eyoh/pyocl_DoGs.txt", "r");
+
+	if(fl == NULL)
+	{
+		std::cout<<"No DoGs file\n";
+		return -1;
+	}
+
+	std::cout<<"Before for loop\n";
+	for(int s=0; s<DoGs_size; s++){
+		if(!feof(fl)){
+			fscanf(fl, "%f", &(DoGs[s]));
+		}
+	}
+	std::cout << "Kp_1_value : " << Kp_1[0].s[0] << "\n";
+	std::cout << "DoGs_value : " << DoGs[0] << "\n";
+
+	// Set up OpenCL hardware and software constructs
+	std::cout << "Setting up OpenCL hardware and software...\n";
+	cl_int err = 0 ;
+	const char* xclbinFilename = argv[2] ;
+
+	oclHardware hardware = getOclHardware(CL_DEVICE_TYPE_ACCELERATOR, target_device_name) ;
+	oclSoftware software ;
+
+	memset(&software, 0, sizeof(oclSoftware)) ;
+	strcpy(software.mKernelName, "local_maxmin") ;
+	strcpy(software.mFileName, xclbinFilename) ;
+	strcpy(software.mCompileOptions, "-g -Wall") ;
+
+	getOclSoftware(software, hardware) ;
+
+//	software.mKernel = clCreateKernel(software.mProgram,
+//			software.mKernelName,
+//			&err) ;
+//	checkErrorStatus(err, "Unable to create kernel!") ;
+
+	// Initialize OpenCL buffers with pointers to allocated memory
+	cl_mem DoGToDevice ;
+	cl_mem KpFromDevice ;
+	cl_mem counterToDevice;
+
+	cl_int* counter = new cl_int[1];
+	counter[0] = 0;
+
+	counterToDevice = clCreateBuffer(hardware.mContext,
+			CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR,
+			sizeof(cl_int),
+			counter,
+			&err) ;
+	checkErrorStatus(err, "Unable to create read buffer") ;
+
+	DoGToDevice = clCreateBuffer(hardware.mContext,
+			CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
+			DoGs_size * sizeof(cl_float),
+			DoGs,
+			&err) ;
+	checkErrorStatus(err, "Unable to create read buffer") ;
+
+	KpFromDevice = clCreateBuffer(hardware.mContext,
+			CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR,
+			Kp_1_size * sizeof(cl_float4),
+			Kp_1,
+			&err) ;
+
+	checkErrorStatus(err, "Unable to create write buffer") ;
+
+	// Pass the arguments to the kernel
+	std::cout << "Setting arguments and enqueueing kernel...\n";
+
+	cl_int border_dist = 5;
+	cl_float peak_thresh = 3.4;
+	cl_int octsize = 1;
+	cl_float EdgeThresh0 = 0.08;
+	cl_float EdgeThresh = 0.06;
+	cl_int nb_keypoints = 8376;
+	cl_int scale = 1;
+
+	// Send the image to the hardware
+	std::cout << "Writing input image to buffer...\n";
+
+	err = clEnqueueWriteBuffer(hardware.mQueue,
+			DoGToDevice,
+			CL_TRUE,
+			0,
+			DoGs_size * sizeof(cl_float),
+			DoGs,
+			0,
+			NULL,
+			NULL) ;
+	checkErrorStatus(err, "Unable to enqueue write buffer") ;
+
+	err = clEnqueueWriteBuffer(hardware.mQueue,
+			counterToDevice,
+			CL_TRUE,
+			0,
+			sizeof(cl_int),
+			counter,
+			0,
+			NULL,
+			NULL) ;
+
+	checkErrorStatus(err, "Unable to enqueue write buffer") ;
+
+	err = clSetKernelArg(software.mKernel, 0, sizeof(cl_mem), &DoGToDevice);
+	checkErrorStatus(err, "Unable to set argument 0");
+	err = clSetKernelArg(software.mKernel, 1, sizeof(cl_mem), &KpFromDevice);
+	checkErrorStatus(err, "Unable to set argument 1");
+	err = clSetKernelArg(software.mKernel, 2, sizeof(cl_int), &border_dist);
+	checkErrorStatus(err, "Unable to set argument 2");
+	err = clSetKernelArg(software.mKernel, 3, sizeof(cl_float), &peak_thresh);
+	checkErrorStatus(err, "Unable to set argument 3");
+	err = clSetKernelArg(software.mKernel, 4, sizeof(cl_int), &octsize);
+	checkErrorStatus(err, "Unable to set argument 4");
+	err = clSetKernelArg(software.mKernel, 5, sizeof(cl_float), &EdgeThresh0);
+	checkErrorStatus(err, "Unable to set argument 5");
+	err = clSetKernelArg(software.mKernel, 6, sizeof(cl_float), &EdgeThresh);
+	checkErrorStatus(err, "Unable to set argument 6");
+	err = clSetKernelArg(software.mKernel, 7, sizeof(cl_mem), &counterToDevice);
+	checkErrorStatus(err, "Unable to set argument 7");
+	err = clSetKernelArg(software.mKernel, 8, sizeof(cl_int), &nb_keypoints);
+	checkErrorStatus(err, "Unable to set argument 8");
+	err = clSetKernelArg(software.mKernel, 9, sizeof(cl_int), &scale);
+	checkErrorStatus(err, "Unable to set argument 9");
+	err = clSetKernelArg(software.mKernel, 10, sizeof(cl_int), &width);
+	checkErrorStatus(err, "Unable to set argument 10");
+	err = clSetKernelArg(software.mKernel, 11, sizeof(cl_int), &height);
+	checkErrorStatus(err, "Unable to set argument 11");
+
+	// Define iteration space
+	size_t globalSize[3] = { 256, 386, 1 } ;
+	size_t localSize[3] = { 256, 1, 1} ;
+	cl_event seq_complete ;
+
+	// Actually start the kernels on the hardware
+	std::cout<<"Start the kernels...\n";
+	err = clEnqueueNDRangeKernel(hardware.mQueue,
+			software.mKernel,
+			2,
+			NULL,
+			globalSize,
+			localSize,
+			0,
+			NULL,
+			&seq_complete) ;
+
+	checkErrorStatus(err, "Unable to enqueue NDRange") ;
+
+	// Wait for kernel to finish
+	std::cout<<"Wait for kernel to finish...\n";
+	clWaitForEvents(1, &seq_complete) ;
+
+	// Read back the image from the kernel
+	std::cout << "Reading output image and writing to file...\n";
+	err = clEnqueueReadBuffer(hardware.mQueue,
+			KpFromDevice,
+			CL_TRUE,
+			0,
+			Kp_1_size * sizeof(cl_float4),
+			Kp_1,
+			0,
+			NULL,
+			&seq_complete) ;
+
+	checkErrorStatus(err, "Unable to enqueue read buffer") ;
+
+	clWaitForEvents(1, &seq_complete) ;
+
+	// Read back the image from the kernel
+	std::cout << "Reading output image and writing to file...\n";
+	err = clEnqueueReadBuffer(hardware.mQueue,
+			counterToDevice,
+			CL_TRUE,
+			0,
+			sizeof(cl_int),
+			counter,
+			0,
+			NULL,
+			&seq_complete) ;
+
+	checkErrorStatus(err, "Unable to enqueue read buffer") ;
+
+	clWaitForEvents(1, &seq_complete) ;
+
+	std::cout << "counter: " << counter[0] << "\n";
+	for (int i =0 ;i < counter[0]; i++){
+		std::cout << "[" << i <<"].s0: " << Kp_1[i].s[0] << ", [" << i <<"].s1: " << Kp_1[i].s[1] << ", [" << i <<"].s2: " << Kp_1[i].s[2] << ",[" << i <<"].s3: " << Kp_1[i].s[3] << "\n";
+	}
+
+	/*
+	 * interp_keypoint() function Execution
+	 */
+//
+//	memset(&software, 0, sizeof(oclSoftware)) ;
+//	strcpy(software.mKernelName, "interp_keypoint") ;
+//	strcpy(software.mFileName, xclbinFilename) ;
+//	strcpy(software.mCompileOptions, "-g -Wall") ;
+//
+//	getOclSoftware(software, hardware) ;
+//
+//	software.mKernel = clCreateKernel(software.mProgram,
+//			software.mKernelName,
+//			&err) ;
+//	checkErrorStatus(err, "Unable to create kernel!") ;
+//
+//	//Write to input buffer
+//	err = clEnqueueWriteBuffer(hardware.mQueue,
+//			DoGToDevice,
+//			CL_TRUE,
+//			0,
+//			DoGs_size,
+//			DoGs,
+//			0,
+//			NULL,
+//			NULL) ;
+//	checkErrorStatus(err, "Unable to enqueue write buffer") ;
+//
+//	err = clEnqueueWriteBuffer(hardware.mQueue,
+//			KpFromDevice,
+//			CL_TRUE,
+//			0,
+//			Kp_1_size,
+//			Kp_1,
+//			0,
+//			NULL,
+//			NULL) ;
+//	checkErrorStatus(err, "Unable to enqueue write buffer") ;
+//
+//	//Set arguments
+//	int start_keypoints = 45, end_keypoints = 87;
+//	float InitSigma = 1.6;
+//	//width = 217, height = 386;
+//
+//
+//	err = clSetKernelArg(software.mKernel, 0, sizeof(cl_mem), &DoGToDevice);
+//	checkErrorStatus(err, "Unable to set argument 0");
+//	err = clSetKernelArg(software.mKernel, 1, sizeof(cl_mem), &KpFromDevice);
+//	checkErrorStatus(err, "Unable to set argument 1");
+//	err = clSetKernelArg(software.mKernel, 2, sizeof(int), &start_keypoints);
+//	checkErrorStatus(err, "Unable to set argument 2");
+//	err = clSetKernelArg(software.mKernel, 3, sizeof(int), &end_keypoints);
+//	checkErrorStatus(err, "Unable to set argument 3");
+//	err = clSetKernelArg(software.mKernel, 4, sizeof(float), &peak_thresh);
+//	checkErrorStatus(err, "Unable to set argument 4");
+//	err = clSetKernelArg(software.mKernel, 5, sizeof(float), &InitSigma);
+//	checkErrorStatus(err, "Unable to set argument 5");
+//	err = clSetKernelArg(software.mKernel, 6, sizeof(int), &width);
+//	checkErrorStatus(err, "Unable to set argument 6");
+//	err = clSetKernelArg(software.mKernel, 7, sizeof(int), &height);
+//	checkErrorStatus(err, "Unable to set argument 7");
+//
+//	// Define iteration space
+//	//globalSize[3] = { 1, 1, 1 } ;
+//	//localSize[3] = { 1, 1, 1} ;
+//
+//	// Actually start the kernels on the hardware
+//	std::cout<<"Start the kernels...\n";
+//	err = clEnqueueNDRangeKernel(hardware.mQueue,
+//			software.mKernel,
+//			1,
+//			NULL,
+//			globalSize,
+//			localSize,
+//			0,
+//			NULL,
+//			&seq_complete) ;
+//
+//	checkErrorStatus(err, "Unable to enqueue NDRange") ;
+//
+//	// Wait for kernel to finish
+//	std::cout<<"Wait for kernel to finish...\n";
+//	clWaitForEvents(1, &seq_complete) ;
+//
+//	// Read back the image from the kernel
+//	std::cout << "Reading output image and writing to file...\n";
+//	err = clEnqueueReadBuffer(hardware.mQueue,
+//			KpFromDevice,
+//			CL_TRUE,
+//			0,
+//			Kp_1_size,
+//			Kp_1,
+//			0,
+//			NULL,
+//			&seq_complete) ;
+//
+//	checkErrorStatus(err, "Unable to enqueue read buffer") ;
+//
+//
+//
+//	clWaitForEvents(1, &seq_complete) ;
+
+//	//write output Kp
+//	fo = fopen("/home/ncl/eyoh/FPGA_Kp.txt","w");
+//
+//	if(fo == NULL)
+//	{
+//
+//		std::cout<<"Cannot make output file\n";
+//		return -1;
+//	}
+//
+//	for( int k=0; k<Kp_1_size/sizeof(float); k++){
+//		for (int k2=0 ;k2<4 ; k2++){
+//			fprintf(fo, "%f\n", Kp_1[k][k2]);
+//		}
+//	}
+//	fclose(fo);
+//
+//
+//
+//	// Release software and hardware
+	release(software) ;
+	release(hardware) ;
+//
+//	//Compare execution Results of GPU and FPGA
+//	GPU_result = fopen("/home/ncl/Wan/interp_Kp_1_copy.txt","r");
+//	FPGA_result = fopen("/home/ncl/eyoh/FPGA_Kp.txt","r");
+//
+//
+//	while(!feof(GPU_result) && !feof(FPGA_result)) {
+//		fscanf(GPU_result, "%f ", &temp1);
+//		fscanf(FPGA_result, "%f ", &temp2);
+//		if(temp1 != temp2){
+//			printf("Result is not same! : %f %f\n", temp1, temp2);
+//		}
+//	}
+//	fclose(GPU_result);
+//	fclose(FPGA_result);
+
+	return 0 ;
+}
