@@ -17,10 +17,10 @@
 #include "oclHelper.h"
 #include "medianFilter.h"
 #include "param.h"
-1234
+EYEY
+
 #define PIX_PER_KP 10  //pre_allocate buffers for keypoints
 
-testtest
 /* Global Variables */
 cl_kernel mKernel_local_maxmin, mKernel_interp_keypoint, mKernel_compute_gradient_orientation,\
 			mKernel_orientation_assignment, mKernel_descriptor;
@@ -335,6 +335,7 @@ int _compact(int start) {
 					 ("copy cnt D->H", cp2_evt),
 					 ("memset 2", mem_evt)
 					 ]
+					 znsj
 	return self.cnt[0]
 }
 
