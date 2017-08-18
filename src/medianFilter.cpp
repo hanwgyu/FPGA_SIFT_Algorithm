@@ -17,6 +17,7 @@
 #include "oclHelper.h"
 #include "medianFilter.h"
 #include "param.h"
+EYEY
 
 #define PIX_PER_KP 10  //pre_allocate buffers for keypoints
 1222124124
@@ -335,6 +336,7 @@ int _compact(int start) {
 					 ("copy cnt D->H", cp2_evt),
 					 ("memset 2", mem_evt)
 					 ]
+					 znsj
 	return self.cnt[0]
 }
 
