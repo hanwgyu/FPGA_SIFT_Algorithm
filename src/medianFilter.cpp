@@ -19,7 +19,6 @@
 #include "param.h"
 
 #define PIX_PER_KP 10  //pre_allocate buffers for keypoints
-1222124124
 
 /* Global Variables */
 const float global_sigmaRatio = pow(2.0, (1.0 / par_Scales));
@@ -421,40 +420,3 @@ int main(int argc, char* argv[])
 
 	return 0 ;
 }
-
-/*
-//write output Kp
-FILE *fo;
-fo = fopen("/home/ncl/eyoh/FPGA_Kp.txt","w");
-
-if(fo == NULL)
-{
-
-	  std::cout<<"Cannot make output file\n";
-	  return -1;
-}
-
-for( int k=0; k<Kp_1_size/sizeof(float); k++){
-	  for (int k2=0 ;k2<4 ; k2++){
-		  fprintf(fo, "%f\n", Kp_1[k][k2]);
-	  }
-}
-fclose(fo);*/
-
-/*
-//Compare execution Results of GPU and FPGA
-FILE *GPU_result, *FPGA_result;
-float temp1, temp2;
-GPU_result = fopen("/home/ncl/Wan/interp_Kp_1_copy.txt","r");
-FPGA_result = fopen("/home/ncl/eyoh/FPGA_Kp.txt","r");
-
-
-while(!feof(GPU_result) && !feof(FPGA_result)) {
-	  fscanf(GPU_result, "%f ", &temp1);
-	  fscanf(FPGA_result, "%f ", &temp2);
-	  if(temp1 != temp2){
-		  //printf("Result is not same! : %f %f\n", temp1, temp2);
-	  }
-}
-fclose(GPU_result);
-fclose(FPGA_result);*/
